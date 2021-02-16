@@ -30,7 +30,7 @@ const App=()=> {
     
     
     },[])
-    let handleKeydown=(event)=>{
+    const handleKeydown=(event)=>{
 
          console.log("keydown");
         // console.log(ballPosition.left,ballPosition.top);
