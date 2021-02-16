@@ -1,41 +1,91 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import '../styles/App.css';
 
-class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            renderBall: false,
-            posi : 0,
-            ballPosition: { left: "0px" }
-        };
-        this.renderChoice = this.renderBallOrButton.bind(this)
-        this.buttonClickHandler = this.buttonClickHandler.bind(this)
-    };
+const App=()=> {
+    const [renderBall,setRenderBall]=useState(false);
+    const [posi,setPosi]=useState(0);
+    const [ballPosition,setBallposition]=useState({left:0,top:0});
+    
+    let buttonClickHandler=() =>{
+   setRenderBall(true);
 
-    buttonClickHandler() {
-   
-   }
-    renderBallOrButton() {
-		if (this.state.renderBall) {
-		    return <div className="ball" style={this.state.ballPosition}></div>
+   };
+    let renderBallOrButton=()=> {
+		if (renderBall) {
+		    return (<div className="ball" style={{
+               
+                left: ballPosition.left+"px",
+                top: ballPosition.top+"px",
+                position: "absolute",
+
+            }}></div>)
 		} else {
-		    return <button onClick={this.buttonClickHandler} >Click For One Ball</button>
+		    return <button onClick={buttonClickHandler} >Click For One Ball</button>
 		}
     }
 
     // bind ArrowRight keydown event
-    componentDidMount() {
-      
+    useEffect( ()=>{
+      document.addEventListener("keydown",handleKeydown);
+    
+    
+    },[])
+    let handleKeydown=(event)=>{
+
+         console.log("keydown");
+        // console.log(ballPosition.left,ballPosition.top);
+        switch(event.keyCode)
+        {
+            case 39:{
+                setBallposition((ballPosition)=> {
+            
+                    return{
+                    left:ballPosition.left+5,
+                    top:ballPosition.top
+                    }
+                }
+                );
+                break;
+            }
+            case 37:{
+                setBallposition( (ballPosition)=>({
+                    left:ballPosition.left-5,
+                    top:ballPosition.top
+                    
+                }));
+                break;
+            
+            }
+            case 40:{
+                setBallposition((ballPosition)=>({
+                    top:ballPosition.top+5,
+                    left:ballPosition.left
+                }));
+                break;
+            
+            }
+            case 38:{
+                setBallposition((ballPosition)=>({
+                    top:ballPosition.top-5,
+                    left:ballPosition.left
+                }));
+                break;
+            
+            }
+            default:
+                {
+                    console.log("invalid");
+                }
+            
+        }
     }
 
-    render() {
         return (
             <div className="playground">
-                {this.renderBallOrButton()}
+                {renderBallOrButton()}
             </div>
         )
-    }
+    
 }
 
 
